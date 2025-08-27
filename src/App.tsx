@@ -1,9 +1,9 @@
 import './App.css'
-
+import GetWeather from './pages/weather'
 function App() {
 
   return (
-    <h1>Weather App</h1>
+      <GetWeather />
   )
 }
 
