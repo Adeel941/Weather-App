@@ -1,5 +1,6 @@
-import { Container, Heading ,Input} from "@chakra-ui/react";
+import { Container, Heading, Input, Stack, Button, Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 interface WeatherData {
@@ -23,12 +24,20 @@ interface WeatherData {
     sunset: number;
   };
 }
-interface weatherProps {
+
+interface weatherCity {
   location: string;
 }
 
-function GetWeather({ location }: weatherProps) {
+function GetWeather() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [location, setLocation] = useState("Lahore");
+  const { register, handleSubmit } = useForm<weatherCity>();
+
+  const onSubmit = (data: weatherCity) => {
+    setLocation(data.location);
+  };
+
   useEffect(() => {
     const weather = async () => {
       const res = await fetch(
@@ -47,10 +56,23 @@ function GetWeather({ location }: weatherProps) {
 
   return (
     <>
-      <Heading>Weather App</Heading>
+      <Heading p={5}>Weather App</Heading>
       {weatherData ? (
         <Container>
-          <Input type="text" placeholder="Enter City Name" w={300} ></Input>
+          <form action="submit" onSubmit={handleSubmit(onSubmit)}>
+            <Stack>
+              <Input
+                type="text"
+                border={"1px solid"}
+                placeholder="Enter City Name"
+                w={300}
+                {...register("location", { required: true })}
+              ></Input>
+              <Button type="submit" bg={"whiteAlpha.300"}>
+                Get Weather
+              </Button>
+            </Stack>
+          </form>
           <h2>{weatherData.name}</h2>
           <p>Temperature: {weatherData.main.temp} °C</p>
           <p>Feels Like: {weatherData.main.feels_like} °C</p>
@@ -66,11 +88,13 @@ function GetWeather({ location }: weatherProps) {
             Sunset:{" "}
             {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString()}
           </p>
-          <p>Description: {weatherData.weather[0].description}</p>
-          <img
-            src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
-            alt={weatherData.weather[0].description}
-          />
+          <Box display={"flex"} justifyContent={"center"} gap={3}>
+            <p>Description: {weatherData.weather[0].description}</p>
+            <img
+              src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+              alt={weatherData.weather[0].description}
+            />
+          </Box>
         </Container>
       ) : (
         <p>Loading...</p>

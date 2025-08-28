@@ -1,3 +1,4 @@
+import { Heading } from "@chakra-ui/react";
 import "./App.css";
 import GetWeather from "./pages/weather";
 import {
@@ -9,16 +10,18 @@ import {
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-
   return (
     <header>
       <SignedOut>
+        <Heading padding={15}>
+          Welcome! Please Sign in to check Weather Details
+        </Heading>
         <SignInButton />
       </SignedOut>
       <SignedIn>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<GetWeather location="Lahore" />} />
+            <Route path="/" element={<GetWeather />} />
           </Routes>
         </BrowserRouter>
         <SignOutButton />
