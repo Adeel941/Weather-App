@@ -3,7 +3,7 @@ import GetWeather from './pages/weather'
 function App() {
 
   return (
-      <GetWeather />
+      <GetWeather location={"Lahore"} />
   )
 }
 
