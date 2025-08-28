@@ -1,4 +1,4 @@
-import { Heading } from "@chakra-ui/react";
+import { Container, Heading ,Input} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -49,7 +49,8 @@ function GetWeather({ location }: weatherProps) {
     <>
       <Heading>Weather App</Heading>
       {weatherData ? (
-        <div>
+        <Container>
+          <Input type="text" placeholder="Enter City Name" w={300} ></Input>
           <h2>{weatherData.name}</h2>
           <p>Temperature: {weatherData.main.temp} °C</p>
           <p>Feels Like: {weatherData.main.feels_like} °C</p>
@@ -70,7 +71,7 @@ function GetWeather({ location }: weatherProps) {
             src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
             alt={weatherData.weather[0].description}
           />
-        </div>
+        </Container>
       ) : (
         <p>Loading...</p>
       )}
