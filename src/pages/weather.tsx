@@ -1,6 +1,8 @@
-import { Container, Heading, Input, Stack, Button, Box } from "@chakra-ui/react";
+import { Container, Heading, Input, Stack, Button, Box, HStack, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUser } from "@clerk/clerk-react";
+import { useParams,useNavigate } from "react-router-dom";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 interface WeatherData {
@@ -31,15 +33,24 @@ interface weatherCity {
 
 function GetWeather() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [location, setLocation] = useState("Lahore");
+  // const [location, setLocation] = useState("Lahore");
+  const {city} = useParams();
+  const location = city || "Lahore" ;
+    const navigate = useNavigate();
   const { register, handleSubmit } = useForm<weatherCity>();
+  const user = useUser();
 
-  const onSubmit = (data: weatherCity) => {
-    setLocation(data.location);
-  };
+  // const onSubmit = (data: weatherCity) => {
+  //   setLocation(data.location);
+  // };
 
+  const onSubmit = (data : weatherCity) => {
+    navigate(`/weather/${data.location}`);
+  }
+  
   useEffect(() => {
     const weather = async () => {
+      if (!location) return;
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`
       );
@@ -56,19 +67,19 @@ function GetWeather() {
 
   return (
     <>
-      <Heading p={5}>Weather App</Heading>
+      <Heading p={5}>Welcome{" "} {user.user?.fullName}</Heading>
       {weatherData ? (
         <Container>
           <form action="submit" onSubmit={handleSubmit(onSubmit)}>
             <Stack>
               <Input
                 type="text"
-                border={"1px solid"}
+                border={"2px solid"}
                 placeholder="Enter City Name"
                 w={300}
                 {...register("location", { required: true })}
               ></Input>
-              <Button type="submit" bg={"whiteAlpha.300"}>
+              <Button type="submit" bg={"whiteAlpha.300"} color={"white"}>
                 Get Weather
               </Button>
             </Stack>
@@ -88,7 +99,7 @@ function GetWeather() {
             Sunset:{" "}
             {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString()}
           </p>
-          <Box display={"flex"} justifyContent={"center"} gap={3}>
+          <Box display={"flex"} alignItems={"center"} gap={3} w={300}>
             <p>Description: {weatherData.weather[0].description}</p>
             <img
               src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
@@ -97,7 +108,10 @@ function GetWeather() {
           </Box>
         </Container>
       ) : (
-        <p>Loading...</p>
+        <HStack>
+          <Spinner size="xl"/> 
+          <Heading>Loading...</Heading>
+        </HStack>
       )}
     </>
   );

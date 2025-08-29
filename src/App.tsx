@@ -21,7 +21,8 @@ function App() {
       <SignedIn>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<GetWeather />} />
+            <Route path="/weather" element={<GetWeather />} />
+            <Route path="/weather/:city" element={<GetWeather />} />
           </Routes>
         </BrowserRouter>
         <SignOutButton />
