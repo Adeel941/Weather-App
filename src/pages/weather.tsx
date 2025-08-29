@@ -2,7 +2,7 @@ import { Container, Heading, Input, Stack, Button, Box, HStack, Spinner } from "
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/clerk-react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 interface WeatherData {
@@ -31,12 +31,18 @@ interface weatherCity {
   location: string;
 }
 
+interface SavedCity {
+  name: string;
+  temp: number;
+  description: string;
+  icon: string;
+}
+
 function GetWeather() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   // const [location, setLocation] = useState("Lahore");
-  const {city} = useParams();
-  const location = city || "Lahore" ;
-    const navigate = useNavigate();
+  const { city } = useParams();
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm<weatherCity>();
   const user = useUser();
 
@@ -44,15 +50,14 @@ function GetWeather() {
   //   setLocation(data.location);
   // };
 
-  const onSubmit = (data : weatherCity) => {
+  const onSubmit = (data: weatherCity) => {
     navigate(`/weather/${data.location}`);
-  }
-  
+  };
+
   useEffect(() => {
     const weather = async () => {
-      if (!location) return;
       const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
       );
       try {
         const weatherData = await res.json();
@@ -63,11 +68,11 @@ function GetWeather() {
       }
     };
     weather();
-  }, [location]);
+  }, [city]);
 
   return (
     <>
-      <Heading p={5}>Welcome{" "} {user.user?.fullName}</Heading>
+      <Heading p={5}>Welcome {user.user?.fullName}</Heading>
       {weatherData ? (
         <Container>
           <form action="submit" onSubmit={handleSubmit(onSubmit)}>
@@ -106,10 +111,34 @@ function GetWeather() {
               alt={weatherData.weather[0].description}
             />
           </Box>
+
+          <Button
+            mt={4}
+            onClick={() => {
+              const saved = JSON.parse(
+                localStorage.getItem("savedCities") || "[]"
+              );
+
+              const exists = saved.some(
+                (c: SavedCity) => c.name === weatherData.name
+              );
+              if (!exists) {
+                saved.push({
+                  name: weatherData.name,
+                  temp: weatherData.main.temp,
+                  description: weatherData.weather[0].description,
+                  icon: weatherData.weather[0].icon,
+                });
+                localStorage.setItem("savedCities", JSON.stringify(saved));
+              }
+            }}
+          >
+            Save City
+          </Button>
         </Container>
       ) : (
         <HStack>
-          <Spinner size="xl"/> 
+          <Spinner size="xl" />
           <Heading>Loading...</Heading>
         </HStack>
       )}

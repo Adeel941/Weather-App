@@ -1,17 +1,20 @@
 import { Heading } from "@chakra-ui/react";
 import "./App.css";
 import GetWeather from "./pages/weather";
+import Saved from "./pages/saved";
+
 import {
   SignInButton,
-  SignedIn,
+  SignedIn,  
   SignedOut,
   SignOutButton,
 } from "@clerk/clerk-react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <header>
+    <>
       <SignedOut>
         <Heading padding={15}>
           Welcome! Please Sign in to check Weather Details
@@ -19,15 +22,14 @@ function App() {
         <SignInButton />
       </SignedOut>
       <SignedIn>
-        <BrowserRouter>
           <Routes>
-            <Route path="/weather" element={<GetWeather />} />
+            <Route path="/" element={<Navigate to="/weather/Lahore" />} />
             <Route path="/weather/:city" element={<GetWeather />} />
+            <Route path="/saved" element={<Saved />} />
           </Routes>
-        </BrowserRouter>
         <SignOutButton />
       </SignedIn>
-    </header>
+    </>
   );
 }
 
