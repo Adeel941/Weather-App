@@ -1,39 +1,31 @@
-import { Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import "./App.css";
 import GetWeather from "./pages/weather";
 import Saved from "./pages/saved";
 import Header from "./components/header";
 import Footer from "./components/footer";
-
-import {
-  SignInButton,
-  SignedIn,  
-  SignedOut,
-  SignOutButton,
-} from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/protectedRoute";
 
 function App() {
   return (
-    <>
+    <Box >
       <Header />
-      <SignedOut>
-        <Heading padding={15}>
-          Welcome! Please Sign in to check Weather Details
-        </Heading>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-          <Routes>
-            <Route path="/" element={<Navigate to="/weather/Lahore" />} />
-            <Route path="/weather/:city" element={<GetWeather />} />
-            <Route path="/saved" element={<Saved />} />
-          </Routes>
-        <SignOutButton />
-      </SignedIn>
-      <Footer/>
-    </>
+      <Routes>
+        <Route path="/" element={<Navigate to="/weather/Lahore" />} />
+        <Route path="/weather/:city" element={<GetWeather />} />
+        <Route
+          path="/saved"
+          element={
+            <ProtectedRoute>
+              <Saved />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <Footer />
+    </Box>
   );
 }
 

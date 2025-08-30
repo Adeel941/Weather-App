@@ -1,6 +1,7 @@
 import { HStack, Button, Heading, Flex } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import logo from "../assets/weather.png";
+import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/clerk-react";
 
 function Header() {
   return (
@@ -34,6 +35,18 @@ function Header() {
         <Link to="/saved">
           <Button color={"white"}>Saved</Button>
         </Link>
+
+        <SignedOut>
+          <SignInButton>
+            <Button color="white" >Sign In</Button>
+          </SignInButton>
+        </SignedOut>
+
+        <SignedIn>
+          <SignOutButton>
+            <Button color="white" >Sign Out</Button>
+          </SignOutButton>
+        </SignedIn>
 
       </HStack>
     </Flex>
