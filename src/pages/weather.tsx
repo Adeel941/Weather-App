@@ -113,7 +113,8 @@ function GetWeather() {
           </Box>
 
           <Button
-            mt={4}
+            my={4}
+            color={"white"}
             onClick={() => {
               const saved = JSON.parse(
                 localStorage.getItem("savedCities") || "[]"
@@ -130,6 +131,7 @@ function GetWeather() {
                   icon: weatherData.weather[0].icon,
                 });
                 localStorage.setItem("savedCities", JSON.stringify(saved));
+                alert("City saved!");
               }
             }}
           >

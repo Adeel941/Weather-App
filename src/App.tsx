@@ -2,6 +2,8 @@ import { Heading } from "@chakra-ui/react";
 import "./App.css";
 import GetWeather from "./pages/weather";
 import Saved from "./pages/saved";
+import Header from "./components/header";
+import Footer from "./components/footer";
 
 import {
   SignInButton,
@@ -15,6 +17,7 @@ import { Route, Routes } from "react-router-dom";
 function App() {
   return (
     <>
+      <Header />
       <SignedOut>
         <Heading padding={15}>
           Welcome! Please Sign in to check Weather Details
@@ -29,6 +32,7 @@ function App() {
           </Routes>
         <SignOutButton />
       </SignedIn>
+      <Footer/>
     </>
   );
 }
