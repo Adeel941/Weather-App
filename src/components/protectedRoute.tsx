@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
-import {Box, Heading} from "@chakra-ui/react"
+import {Box, Button, Heading} from "@chakra-ui/react"
 import type {ReactNode}  from "react";
 
 interface Props {
@@ -16,7 +16,10 @@ function ProtectedRoute({ children }: Props) {
             <SignedOut>
             <Box textAlign="center" mt={10}>
                 <Heading mb={4}>Please Sign In to access Saved Cities</Heading>
-                <SignInButton />
+                <SignInButton>
+                    <Button bg={"whiteAlpha.400"} color={"white"}>Sign In</Button>
+                </SignInButton>
+              
             </Box>
             </SignedOut>
         </>

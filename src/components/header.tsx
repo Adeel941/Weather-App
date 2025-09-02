@@ -1,4 +1,4 @@
-import { HStack, Button, Heading, Flex } from "@chakra-ui/react";
+import { HStack, Button, Heading, Flex, Box } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import logo from "../assets/weather.png";
 import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/clerk-react";
@@ -18,33 +18,35 @@ function Header() {
       justify="space-between"
       zIndex={1000} 
     >
-      <Heading size="xl" color="white" display="flex" alignItems="center" font={"bold"}>
-        <img
+      <Heading  color="white" display="flex" alignItems="center" font={"bold"}>
+        <Box _hover={{ transform: "rotate(360deg)", transition: "transform 0.5s"  }} >
+          <img
           src={logo}
           alt="Weather Icon"
-          style={{ width: 50, height: 50, marginRight: 10 }}
+          style={{ width: 60, height: 60, marginRight: 10 }}
         />
+        </Box>
         Weather Dashboard
       </Heading>
 
       <HStack gap={4}>
         <Link to="/weather/Lahore">
-          <Button color={"white"}>Home</Button>
+          <Button color={"white"} _hover={{ border: "1px solid white" }}>Home</Button>
         </Link>
 
         <Link to="/saved">
-          <Button color={"white"}>Saved</Button>
+          <Button color={"white"} _hover={{ border: "1px solid white" }}>Saved</Button>
         </Link>
 
         <SignedOut>
           <SignInButton>
-            <Button color="white" >Sign In</Button>
+            <Button color={"white"} _hover={{ border: "1px solid white" }}>Sign In</Button>
           </SignInButton>
         </SignedOut>
 
         <SignedIn>
           <SignOutButton>
-            <Button color="white" >Sign Out</Button>
+            <Button color={"white"} _hover={{ border: "1px solid white" }} >Sign Out</Button>
           </SignOutButton>
         </SignedIn>
 

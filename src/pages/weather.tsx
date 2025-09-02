@@ -1,4 +1,19 @@
-import { Container, Heading, Input, Stack, Button, Box,Text } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Input,
+  Stack,
+  Button,
+  Box,
+  Text,
+  Card,
+  CardHeader,
+  CardBody,
+  SimpleGrid,
+  Flex,
+  Link
+} from "@chakra-ui/react";
+ import { Thermometer, Wind, Droplet, Sunrise, Sunset } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "@clerk/clerk-react";
@@ -55,9 +70,7 @@ function GetWeather() {
 
   const onSubmit = (data: weatherCity) => {
     navigate(`/weather/${data.location}`);
-    const history  = JSON.parse(
-      localStorage.getItem("searchHistory") || "[]"
-    );
+    const history = JSON.parse(localStorage.getItem("searchHistory") || "[]");
     history.unshift(data.location);
     const unique = [...new Set(history)]; 
     localStorage.setItem("searchHistory", JSON.stringify(unique.slice(0, 5)));
@@ -93,87 +106,181 @@ function GetWeather() {
 
   return (
     <>
-      <Heading p={5}>Welcome {user.user?.fullName}</Heading>
+      <Heading p={5} mt={{base:65, md:1 }}>Welcome {user.user?.fullName}</Heading>
         <Container>
           <form action="submit" onSubmit={handleSubmit(onSubmit)}>
-            <Stack>
-              <Input
-                type="text"
-                border={"2px solid"}
-                placeholder="Enter City Name"
-                w={300}
-                {...register("location", { required: true })}
-              ></Input>
-              <Button type="submit" bg={"whiteAlpha.300"} color={"white"}>
-                Get Weather
-              </Button>
-            </Stack>
+            <Flex direction={"column"} align={"center"}>
+              <Stack direction={"row"} gap={4} mb={2} justify={"center"}>
+                <Input
+                  type="text"
+                  border={"2px solid"}
+                  placeholder="Enter City Name"
+                  w={300}
+                  {...register("location", { required: true })}
+                ></Input>
+                <Button type="submit" bg={"whiteAlpha.400"} color={"white"} _hover={{ border: "2px solid white" }}>
+                  Get Weather
+                </Button>
+                
+              </Stack>
+              <Box display={"flex"} mt={2}>
+                <Box display="flex"  gap={3} mb={8} alignContent={"center"}>
+                  <Heading size="md" alignSelf={"center"}>Recent Searches:</Heading>
+                  {history.map((city: string, index: number) => (
+                    <Link key={index} onClick={() => navigate(`/weather/${city}`) } color={"white"} _hover={{color:"cyan.600"}}>{city}</Link>
+                  ))}
+                </Box>
+              </Box>
+            </Flex>
           </form>
           {loading && <Loading />}
           {error && <ErrorMessage message={error} />}
           {weatherData && !loading && !error && (
-          <>
-            <h2>{weatherData.name}</h2>
-            <p>Temperature: {weatherData.main.temp} °C</p>
-            <p>Feels Like: {weatherData.main.feels_like} °C</p>
-            <p>Min Temperature: {weatherData.main.temp_min} °C</p>
-            <p>Max Temperature: {weatherData.main.temp_max} °C</p>
-            <p>Wind Speed: {weatherData.wind.speed} m/s</p>
-            <p>Humidity: {weatherData.main.humidity} %</p>
-            <p>
-              Sunrise:{" "}
-              {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString()}
-            </p>
-            <p>
-              Sunset:{" "}
-              {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString()}
-            </p>
-            <Box display={"flex"} alignItems={"center"} gap={3} w={300}>
-              <p>Description: {weatherData.weather[0].description}</p>
-              <img
-                src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
-                alt={weatherData.weather[0].description}
-              />
-            </Box>
+          <Flex align={"center"} gap={10} flexDirection={"column"} lg={{flexDirection:"row"}} mb={10} >
+            <Card.Root
+              bg="whiteAlpha.200"
+              color="white"
+              borderRadius="2xl"
+              p={2}
+              textAlign="center"
+              shadow="xl"
+              w={{base:"90%"}}
+              maxW="400px"
+              mx="auto"
+            >
+              <CardHeader>
+                <Heading size="lg">{weatherData.name}</Heading>
+              </CardHeader>
+              <CardBody display={"flex"} flexDirection={"column"} alignItems={"center"} >
+                <Heading fontSize="6xl" mb={2} display={"flex"} justifyContent={"center"} alignItems={"center"} gap={3}>
+                  <Thermometer size={60}/>{weatherData.main.temp}°C
+                </Heading>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  gap={3}
+                >
+                  <Text fontSize="xl">
+                    {weatherData.weather[0].description}
+                  </Text>
+                  <img
+                    src={`http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`}
+                    alt={weatherData.weather[0].description}
+                  />
+                </Box>
+                <Button
+                  my={6}
+                  bg={"whiteAlpha.400"}
+                  _hover={{ border: "1px solid white" }}
+                  color={"white"}
+                  w={"60%"}
+                  onClick={() => {
+                    const saved = JSON.parse(
+                      localStorage.getItem("savedCities") || "[]"
+                    );
+                    const exists = saved.some(
+                      (c: SavedCity) => c.name === weatherData.name
+                    );
+                    if(exists) {
+                      alert("City already saved!");
+                    }
+                    if (!exists) {
+                      saved.push({
+                        name: weatherData.name,
+                        temp: weatherData.main.temp,
+                        description: weatherData.weather[0].description,
+                        icon: weatherData.weather[0].icon,
+                      });
+                      localStorage.setItem("savedCities", JSON.stringify(saved));
+                      alert("City saved!");
+                    }
+                  }}
+                >
+                  Save City
+                </Button>
+              </CardBody>
+            </Card.Root>
 
-          <Button
-            my={4}
-            color={"white"}
-            onClick={() => {
-              const saved = JSON.parse(
-                localStorage.getItem("savedCities") || "[]"
-              );
+            <SimpleGrid columns={{ base: 2, md: 3, sm:3 }}  gap={4}  h={"100%"} w={"100%"} >
+              <Card.Root
+                bg="whiteAlpha.200"
+                p={2}
+                pt={6}
+                borderRadius="xl"
+                textAlign="center"
+              >
+                <Text fontWeight="bold" display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2}> Wind  <Wind/></Text>
+                <Text>{weatherData.wind.speed} m/s</Text>
+              </Card.Root>
+              <Card.Root
+                bg="whiteAlpha.200"
+                p={2}
+                pt={6}
+                borderRadius="xl"
+                textAlign="center"
+              >
+                <Text fontWeight="bold">Feels Like</Text>
+                <Text>{weatherData.main.feels_like}°C</Text>
+              </Card.Root>
+              <Card.Root
+                bg="whiteAlpha.200"
+                p={2}
+                pt={6}
+                borderRadius="xl"
+                textAlign="center"
+                md={{w:140}}
 
-              const exists = saved.some(
-                (c: SavedCity) => c.name === weatherData.name
-              );
-              if (!exists) {
-                saved.push({
-                  name: weatherData.name,
-                  temp: weatherData.main.temp,
-                  description: weatherData.weather[0].description,
-                  icon: weatherData.weather[0].icon,
-                });
-                localStorage.setItem("savedCities", JSON.stringify(saved));
-                alert("City saved!");
-              }
-            }}
-          >
-            Save City
-          </Button>
-        
-          <Box mt={4} >
-            <Heading size="md">Recent Searches</Heading>
-            <Box display="flex" gap={3} mt={2}>
-              {history.map((city: string, index: number) => (
-              <Text key={index}>{city}</Text>
-            ))}
-            </Box>
-
-            </Box>
-          </>
-          )}
-        </Container>
+              >
+                <Text fontWeight="bold" display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2}>Humidity <Droplet/></Text>
+                <Text>{weatherData.main.humidity}%</Text>
+              </Card.Root>
+              <Card.Root
+                bg="whiteAlpha.200"
+                p={2}
+                pt={6}
+                borderRadius="xl"
+                textAlign="center"
+              >
+                <Text fontWeight="bold">Min Temp</Text>
+                <Text>{weatherData.main.temp_min}°C</Text>
+              </Card.Root>
+              <Card.Root
+                bg="whiteAlpha.200"
+                p={2}
+                pt={6}
+                borderRadius="xl"
+                textAlign="center"
+                h={140}
+              >
+                <Text fontWeight="bold">Max Temp</Text>
+                <Text>{weatherData.main.temp_max}°C</Text>
+              </Card.Root>
+              <Card.Root
+                bg="whiteAlpha.200"
+                p={4}
+                borderRadius="xl"
+                textAlign="center"
+                h={140}
+                md={{w:140}}
+              >
+                <Text fontWeight="bold" display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2}>Sunrise <Sunrise/></Text>
+                <Text>
+                  {new Date(
+                    weatherData.sys.sunrise * 1000
+                  ).toLocaleTimeString()}{" "}
+                </Text>
+                <Text fontWeight="bold" display={"flex"} justifyContent={"center"} alignItems={"center"} gap={2} mt={2}>Sunset <Sunset/></Text>
+                <Text>
+                  {new Date(
+                    weatherData.sys.sunset * 1000
+                  ).toLocaleTimeString()}
+                </Text>
+              </Card.Root>
+            </SimpleGrid>
+          </Flex>
+        )}
+      </Container>
     </>
   );
 }

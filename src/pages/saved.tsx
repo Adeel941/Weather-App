@@ -8,6 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import "../App.css"
 
 interface SavedCity {
   name: string;
@@ -21,11 +22,13 @@ function Saved() {
   const savedCities = JSON.parse(localStorage.getItem("savedCities") || "[]");
 
   return (
-    <Container p={5}>
-      <Heading mb={4}>Saved Cities</Heading>
+    <Container p={5} id="root">
+      <Heading mb={4} fontSize={25} >Saved Cities</Heading>
       <Button
+        bg={"whiteAlpha.400"} 
         color={"white"}
         mb={4}
+        _hover={{ border: "1px solid white" }}
         onClick={() => {
           localStorage.removeItem("savedCities");
           window.location.reload();
@@ -42,6 +45,7 @@ function Saved() {
               key={city.name}
               border="1px solid"
               borderRadius="md"
+              bg={"whiteAlpha.200"}
               p={3}
               display="flex"
               alignItems="center"
