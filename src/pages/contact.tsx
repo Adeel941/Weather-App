@@ -16,7 +16,7 @@ function ContactForm() {
   }
 
   return (
-    <Box maxW="400px" mx="auto" mt={10} p={5}>
+    <Box maxW="400px" mx="auto" mt={10} p={5} bg={"whiteAlpha.300"} borderRadius={"lg"} border={"2px black"}>
       <Heading size="lg" mb={6} textAlign="center">
         Contact
       </Heading>
