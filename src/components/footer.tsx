@@ -1,4 +1,5 @@
-import { Box, Text, HStack, Link } from "@chakra-ui/react";
+import { Box, Text, HStack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -17,18 +18,14 @@ function Footer() {
       <HStack justify="center" gap={6}>
         <Text fontSize="sm">All Right Reserved Weather Dashboard 2025</Text>
         <Link
-          href="https://adeel941.github.io/Simple-Portfolio/"
-          fontSize="sm"
           color={"white"}
-          _hover={{ textDecoration: "underline", color: "white" }}
+          to="/about"
         >
           About
         </Link>
         <Link
-          href="https://adeel941.github.io/Simple-Portfolio/"
-          fontSize="sm"
+          to="/contact"
           color={"white"}
-          _hover={{ textDecoration: "underline", color: "white" }}
         >
           Contact
         </Link>

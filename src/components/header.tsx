@@ -1,7 +1,7 @@
 import { HStack, Button, Heading, Flex, Box } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import logo from "../assets/weather.png";
-import { SignedIn, SignedOut, SignInButton, SignOutButton } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton,  UserButton } from "@clerk/clerk-react";
 
 function Header() {
   return (
@@ -12,42 +12,40 @@ function Header() {
       left={0}
       right={0}
       w="100%" 
-      bg="cyan.700"
       p={4}
       align="center"
       justify="space-between"
       zIndex={1000} 
     >
       <Heading  color="white" display="flex" alignItems="center" font={"bold"}>
-        <Box _hover={{ transform: "rotate(360deg)", transition: "transform 0.5s"  }} >
+        <Box _hover={{ transform: "rotate(360deg)", transition: "transform 0.5s"  }} onClick={() => window.location.href = "/weather/Lahore"}cursor="pointer" >
           <img
           src={logo}
           alt="Weather Icon"
           style={{ width: 60, height: 60, marginRight: 10 }}
         />
         </Box>
-        Weather Dashboard
       </Heading>
 
       <HStack gap={4}>
         <Link to="/weather/Lahore">
-          <Button color={"white"} _hover={{ border: "1px solid white" }}>Home</Button>
+          <Button color={"white"} bg={"whiteAlpha.400"} _hover={{ border: "1px solid white" }}>Home</Button>
         </Link>
 
         <Link to="/saved">
-          <Button color={"white"} _hover={{ border: "1px solid white" }}>Saved</Button>
+          <Button color={"white"} bg={"whiteAlpha.400"} _hover={{ border: "1px solid white" }}>Saved</Button>
         </Link>
 
         <SignedOut>
           <SignInButton>
-            <Button color={"white"} _hover={{ border: "1px solid white" }}>Sign In</Button>
+            <Button color={"white"} bg={"whiteAlpha.400"} _hover={{ border: "1px solid white" }}>Sign In</Button>
           </SignInButton>
         </SignedOut>
 
         <SignedIn>
-          <SignOutButton>
-            <Button color={"white"} _hover={{ border: "1px solid white" }} >Sign Out</Button>
-          </SignOutButton>
+          <Box  bg={"whiteAlpha.600"} p={2} pt={3}  borderRadius={"xl"} >
+           <UserButton/>
+          </Box>
         </SignedIn>
 
       </HStack>

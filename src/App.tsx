@@ -4,6 +4,8 @@ import GetWeather from "./pages/weather";
 import Saved from "./pages/saved";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import ContactForm from "./pages/contact";
+import About from "./pages/About";
 import { Navigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute";
@@ -15,6 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/weather/Lahore" />} />
         <Route path="/weather/:city" element={<GetWeather />} />
+        <Route path="/contact" element={<ContactForm/>} /> 
+        <Route path="/about" element={<About />} />
         <Route
           path="/saved"
           element={

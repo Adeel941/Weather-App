@@ -1,11 +1,11 @@
 import {
   Container,
   Heading,
-  Stack,
   Box,
   Text,
   Image,
   Button,
+  Wrap,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import "../App.css"
@@ -36,7 +36,7 @@ function Saved() {
       >
         Clear Saved Cities
       </Button>
-      <Stack gap={4}>
+      <Wrap gap={4} justify={"center"} >
         {savedCities.length === 0 ? (
           <Text>No saved cities yet.</Text>
         ) : (
@@ -67,7 +67,7 @@ function Saved() {
             </Box>
           ))
         )}
-      </Stack>
+      </Wrap>
     </Container>
   );
 }
