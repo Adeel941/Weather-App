@@ -9,6 +9,7 @@ import About from "./pages/About";
 import { Navigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute";
+import Signin from "./pages/signin";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/signin" element ={<Signin/>}/>
       </Routes>
       <Footer />
     </Box>
