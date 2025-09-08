@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import {Heading, Stack, Text } from "@chakra-ui/react";
 
 interface Props {
   message: string;
@@ -6,11 +6,12 @@ interface Props {
 
 function ErrorMessage({ message }: Props) {
   return (
-    <Box textAlign="center" mt={10}>
+    <Stack textAlign="center" mt={10}>
       <Heading fontSize="xl" color="red.500">
         {message}
       </Heading>
-    </Box>
+      <Text>Please enter a valid city name.</Text>
+    </Stack>
   );
 }
 

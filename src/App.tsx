@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute";
 import Signin from "./pages/signin";
+import NotFound from "./pages/notFound";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           }
         />
         <Route path="/signin" element ={<Signin/>}/>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
       <Footer />
     </Box>

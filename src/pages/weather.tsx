@@ -1,5 +1,6 @@
 import { Container, Heading, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import SearchWeather from "../components/search";
 import WeatherCard from "../components/mainCard";
 import WeatherDetails from "../components/weatherDetails";
@@ -32,14 +33,14 @@ function GetWeather() {
     const weather = async () => {
       setLoading(true);
       setError(null);
-      const res = await fetch(
+      const res = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
       );
       try {
-        if (!res.ok) {
+        if (res.status!=200) {
           throw new Error("City not found!");
         }
-        const weatherData = await res.json();
+        const weatherData = await res.data;
         setWeatherData(weatherData);
         document.documentElement.style.setProperty(
           "--dynamic-bg",
@@ -51,11 +52,6 @@ function GetWeather() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: string | any) {
         setError(error.message || "Something went wrong");
-        setWeatherData(null);
-        document.documentElement.style.setProperty(
-          "--dynamic-bg",
-          `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/bg.jpg')`
-        );
         console.log(error);
       } finally {
         setLoading(false);

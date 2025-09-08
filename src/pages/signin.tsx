@@ -6,7 +6,7 @@ function Signin() {
   return (
     <Box textAlign="center" mt={10}>
       <Heading mb={4}>Please Sign In to access Saved Cities</Heading>
-      <SignInButton>
+      <SignInButton mode="redirect" forceRedirectUrl="http://localhost:5173/saved">
         <Button bg={"whiteAlpha.400"} color={"white"}>
           Sign In
         </Button>
