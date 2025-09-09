@@ -1,7 +1,7 @@
-import {Heading, Stack, Text } from "@chakra-ui/react";
+import {Heading, Stack } from "@chakra-ui/react";
 
 interface Props {
-  message: string;
+  message: string|undefined;
 }
 
 function ErrorMessage({ message }: Props) {
@@ -10,7 +10,6 @@ function ErrorMessage({ message }: Props) {
       <Heading fontSize="xl" color="red.500">
         {message}
       </Heading>
-      <Text>Please enter a valid city name.</Text>
     </Stack>
   );
 }

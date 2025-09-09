@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Thermometer } from "lucide-react";
 import type { WeatherData, SavedCity } from "../types/weather";
+import { Link } from "react-router-dom";
 
 interface Props {
   weatherData: WeatherData;
@@ -81,6 +82,9 @@ function WeatherCard({ weatherData }: Props) {
         >
           Save City
         </Button>
+        {weatherData?.name && (
+          <Link to={`/forecast/${weatherData.name}`}>Forecast</Link>
+        )}
       </CardBody>
     </Card.Root>
   );

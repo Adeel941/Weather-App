@@ -31,3 +31,17 @@ export interface SavedCity {
   description: string;
   icon: string;
 }
+
+export interface forecastData{
+  list:{
+    dt:number;
+    main:{
+      temp:number;
+    }
+    weather:{
+      description:string;
+      icon:string;
+    }[];
+    dt_txt:string;
+  }[];
+}

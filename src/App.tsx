@@ -11,6 +11,7 @@ import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute";
 import Signin from "./pages/signin";
 import NotFound from "./pages/notFound";
+import Forecast from "./pages/forecast";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/weather/Lahore" />} />
         <Route path="/weather/:city" element={<GetWeather />} />
+        <Route path="/forecast"  element={<Navigate to="/forecast/Lahore"/>} />
+        <Route path="/forecast/:city"  element={<Forecast/>} />
         <Route path="/contact" element={<ContactForm/>} /> 
         <Route path="/about" element={<About />} />
         <Route
